@@ -12,6 +12,7 @@
 <h4>@(ViewBag.ProgId != null? ViewBag.ProgId:"")</h4>
 <p>
     @Html.ActionLink("Create New", "ConsumerProgOptinCreate")
+    <button class="pull-right" id="export-csv">Get Mailing List</button>
 </p>
 @if (ViewBag.ProgList != null)
 {
@@ -205,3 +206,119 @@
             }
         </table>
         }
+
+<script>
+        $(document).ready(function () {
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+
+            $('#export-csv').click(function() {
+                var titles = ['First Name', 'Last Name', 'Email'];
+                var data = [];
+
+                // /*
+                //  * Get the actual data, this will contain all the data, in 1 array
+                //  */
+                $('.table td').each(function() {
+                    var str = $(this).text().replace(/^\s+|\s+$/g, '');
+                    data.push(str);
+                });
+
+                console.log(data.length);
+
+                var col_count = 24;
+                var row_count = data.length / col_count;
+                var real_data = [];
+                for(var i = 0; i < row_count; i++)
+                {
+                    real_data.push(data[i * col_count + 3]);
+                    real_data.push(data[i * col_count + 5]);
+                    real_data.push(data[i * col_count + 17]);
+                }
+
+                console.log(real_data);
+                
+                // /*
+                //  * Convert our data to CSV string
+                //  */
+                var CSVString = prepCSVRow(titles, titles.length, '');
+                var titles = ['First Name', 'Last Name', 'Email'];
+                CSVString = prepCSVRow(real_data, 3, CSVString);
+
+                /*
+                 * Make CSV downloadable
+                 */
+                var downloadLink = document.createElement("a");
+                var blob = new Blob(["\ufeff", CSVString]);
+                var url = URL.createObjectURL(blob);
+                downloadLink.href = url;
+
+                var file_name = $('#page-wrapper h4').text();
+                var d = new Date();
+
+                var mm = d.getMonth() + 1; // getMonth() is zero-based
+                var dd = d.getDate();
+                var hh = d.getHours();
+                var m = d.getMinutes();
+                var ss = d.getSeconds();
+
+                var datetime = [d.getFullYear(),
+                                (mm>9 ? '' : '0') + mm,
+                                (dd>9 ? '' : '0') + dd,
+                                (hh>9 ? '' : '0') + hh,
+                                (m>9 ? '' : '0') + m,
+                                (ss>9 ? '' : '0') + ss,
+                            ].join('');
+
+                downloadLink.download = "OptinList_" + file_name + "_" + datetime + ".csv";
+
+                /*
+                 * Actually download CSV
+                 */
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            });
+
+            function prepCSVRow(arr, columnCount, initial) {
+                var row = ''; // this will hold data
+                var delimeter = ','; // data slice separator, in excel it's `;`, in usual CSv it's `,`
+                var newLine = '\r\n'; // newline separator for CSV row
+
+                /*
+                 * Convert [1,2,3,4] into [[1,2], [3,4]] while count is 2
+                 * @param _arr {Array} - the actual array to split
+                 * @param _count {Number} - the amount to split
+                 * return {Array} - splitted array
+                 */
+                function splitArray(_arr, _count) {
+                    var splitted = [];
+                    var result = [];
+                    _arr.forEach(function(item, idx) {
+                        if ((idx + 1) % _count === 0) {
+                            splitted.push(item);
+                            result.push(splitted);
+                            splitted = [];
+                        } else {
+                            splitted.push(item);
+                        }
+                    });
+                    return result;
+                }
+                var plainArr = splitArray(arr, columnCount);
+                // don't know how to explain this
+                // you just have to like follow the code
+                // and you understand, it's pretty simple
+                // it converts `['a', 'b', 'c']` to `a,b,c` string
+                plainArr.forEach(function(arrItem) {
+                    arrItem.forEach(function(item, idx) {
+                        row += item + ((idx + 1) === arrItem.length ? '' : delimeter);
+                    });
+                    row += newLine;
+                });
+                return initial + row;
+            }
+            
+        });
+    </script>
