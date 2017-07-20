@@ -119,7 +119,7 @@
 <h4>NDA08-DU02-17</h4>
 <p>
     <a href="http://devabbvie.meintl.com/consumerdash/ConsumerOptin/ConsumerProgOptinCreate">Create New</a>
-    <button class="pull-right" id="export-csv">Export CSV</button>
+    <button class="pull-right" id="export-csv">Get Mailing List</button>
 </p>
         <table class="table">
             <tbody><tr>
@@ -1249,7 +1249,25 @@
                 var blob = new Blob(["\ufeff", CSVString]);
                 var url = URL.createObjectURL(blob);
                 downloadLink.href = url;
-                downloadLink.download = "data.csv";
+
+                var file_name = $('#page-wrapper h4').text();
+                var d = new Date();
+
+                var mm = d.getMonth() + 1; // getMonth() is zero-based
+                var dd = d.getDate();
+                var hh = d.getHours();
+                var m = d.getMinutes();
+                var ss = d.getSeconds();
+
+                var datetime = [d.getFullYear(),
+                                (mm>9 ? '' : '0') + mm,
+                                (dd>9 ? '' : '0') + dd,
+                                (hh>9 ? '' : '0') + hh,
+                                (m>9 ? '' : '0') + m,
+                                (ss>9 ? '' : '0') + ss,
+                            ].join('');
+
+                downloadLink.download = "OptinList_" + file_name + "_" + datetime + ".csv";
 
                 /*
                  * Actually download CSV
