@@ -1,0 +1,207 @@
+﻿@model IEnumerable<sb_admin_2.Web.Models.ConsumerProgOptin>
+
+@{
+    ViewBag.Title = "RSVP Opt-Ins";
+}
+<style type='text/css'>
+    td:nth-child(1) {
+        text-align: right;
+    }
+</style>
+<h2>RSVP Opt-Ins</h2>
+<h4>@(ViewBag.ProgId != null? ViewBag.ProgId:"")</h4>
+<p>
+    @Html.ActionLink("Create New", "ConsumerProgOptinCreate")
+</p>
+@if (ViewBag.ProgList != null)
+{
+    <div class="container">
+        <div class="row">
+           <div class="col-xs-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>
+                            Please select a Program
+                        </h4>
+                    </div>
+                    <table class="table table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-3" style="text-align:left;">Program ID</th>
+                                <th class="col-xs-7">Location</th>
+                                <th class="col-xs-2">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var itemProgID in (List<string>)ViewBag.ProgList)
+                {
+                                <tr>
+                                    <td class="col-xs-3"  style="text-align:left;"><a href="@Url.Action("ConsumerProgOptinIndex", new { progid = itemProgID })">@itemProgID</a></td>
+                                    <td class="col-xs-7">.</td>
+                                    <td class="col-xs-2">.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        }
+        else
+        {
+        <table class="table">
+            <tr>
+                <th></th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.ProgramID)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.NamePrefix)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LName)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.NameSuffix)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateEntered)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Addr1)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.Addr2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.City)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Zip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone1)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.DOBmonth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DOByear)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.Phone2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmailAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.q1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.q2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.q3)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.RecordSource)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.isCareGiver)
+                </th>
+                <th class="hidden">
+                    @Html.DisplayNameFor(model => model.AgreedTerms)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Edit", "ConsumerProgOptinEdit", new { id = item.ID })
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.ProgramID)
+                        </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.NamePrefix)
+                    </td>
+                    <td style="max-width:200px;overflow-x:hidden;">
+                        @Html.DisplayFor(modelItem => item.FName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MName)
+                    </td>
+                    <td style="max-width:200px;overflow-x:hidden;">
+                        @Html.DisplayFor(modelItem => item.LName)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.NameSuffix)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateEntered)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Addr1)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.Addr2)
+                    </td>
+                    <td style="max-width:200px;overflow-x:hidden;">
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone1)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.DOBmonth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DOByear)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.Phone2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.q1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.q2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.q3)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.RecordSource)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isCareGiver)
+                    </td>
+                    <td class="hidden">
+                        @Html.DisplayFor(modelItem => item.AgreedTerms)
+                    </td>
+
+                </tr>
+            }
+        </table>
+        }
